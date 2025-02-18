@@ -1,0 +1,187 @@
+DevOps
+------
+
+- Desenvolvimento x Operações
+
+
+CI-CD:
+- quando vc passa a ter os testes executando de forma automatizada vc tem Continuous Integration
+- quando vc faz as entregas de forma automatizada vc tem o Continuous Delivery - Sempre que os devs terminam algo e roda os testes pelo CI um novo pacote é criado de forma automática mas não é implementado no ambiente
+- quando vc faz a implementação de forma automatizada vc tem o continuous deployment - aqui o devops ja tem de forma automática do pacote no ambiente (ex: hml, prod, ...)
+
+Jenkins - Link do projeto da EBAC:
+
+parte 1
+- entrar no site e baixar o arquivo de instalação
+	obs: precisa validar a jdk de acordo com o Jenkins e também ter o node.js
+- ir em na pasta do Jenkins buscar a senha primaria de admin
+	C: - Progem files - Jenkins - Jenkins.err - [colocar para abrir com editor de texto] - copiar a senha que estará acima deste linha [This may also be found at: C:\ProgramData\Jenkins\.jenkins\secrets\initialAdminPassword]
+
+No dashboard do Jenkins:
+- Criar uma nova tarefa
+- Adicionar o nome
+- Selecionar a opção construir um projeto de software no estilo livre
+- Adicionar descrição (opcional)
+- Selecionar em Gerenciamento de código fonte - git
+- Adicionar o link para o repositorio
+- validar a branch correta
+- no final da tela vai em adicionar passos de contrucao - executar comando no windows
+	Obs: adicionar em passos diferentes
+	1 - npm install
+	2 - set NO_COLOR=1 br npm test
+
+
+parte 2:
+- criar uma nova tarefa e adicionar o nome
+- selecionar pipeline
+- ao final da tela na caixa para adicionar script. Trocar o select no lado direto da quadro para - hello word
+- clicar no link abaixo - pipeline syntaxe (para facilitar a navegação, clicar com botão direito e abrir em uma nova aba)
+- sample step - git: Git
+- adicionar a url
+- validar a branch de execução
+- clicar no botão - Generate pipeline script
+- copiar o script e colar no lugar do echo na tela de config da pipe
+- alterar o nome do stage de Hello para Setup
+- apos isso vc precisa adicionar os scripts de execução de acordo com o SO. No caso sera windows entao
+	- clicar no link abaixo de Pipeline syntaxe
+	- selecionar em Sample Step: bat: windows batch script
+	- adicionar o comando na caixa Batch script (para facilitar a navegação, clicar com botão direito e abrir em uma nova aba)
+
+	- clicar no botão generate pipeline script
+	- copiar o script e colar no método de execução anterior da pipe
+Resultado:
+pipeline {
+    agent any
+
+    stages {
+        stage('Setup') {
+            steps {
+                git branch: 'main', url: 'https://github.com/bruno-rcn/ebac-cypress-samples'
+                bat 'npm install'
+            }
+        }
+    }
+}
+	
+
+depois vai ser criado um novo stage para teste
+- ir na aba de pipeline syntaxe - para windows e digitar - 
+	set NO_COLOR=1 
+	npm test
+	- clicar no botão generate pipeline script
+	- copiar o script e colar no método de execução anterior da pipe 
+	- save e colocar para rodar
+Resultado:
+pipeline {
+    agent any
+
+    stages {
+        stage('Setup') {
+            steps {
+                git branch: 'main', url: 'https://github.com/bruno-rcn/ebac-cypress-samples'
+                bat 'npm install'
+            }
+        }
+        stage('Test') {
+            steps {
+                bat '''set NO_COLOR=1
+                npm test'''
+            }
+        }
+    }
+}
+
+
+
+parte 3: Executar uma pipeline utilizando o arquivo jenkinsfile
+
+- Aqui, nas definições de pipeline trocar de Pipeline Script para Pipeline script from SCM
+- No select de SCM trocar para git, adicionar o url do repositório, validar a branch (nesse caso sera a pipeline e não mais a main), em Script Path adicionar o nome do arquivo (nesse projeto sera JenkinsfileWindows)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
